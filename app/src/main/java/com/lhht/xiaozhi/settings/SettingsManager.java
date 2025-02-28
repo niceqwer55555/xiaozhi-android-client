@@ -10,6 +10,7 @@ public class SettingsManager {
     private static final String KEY_TOKEN = "token";
     private static final String KEY_ENABLE_TOKEN = "enable_token";
     private static final String KEY_WS_URLS = "ws_urls";
+    private static final String KEY_DEVICE_ID = "device_id";
     
     private final SharedPreferences preferences;
     
@@ -45,5 +46,22 @@ public class SettingsManager {
 
     public Set<String> getWsUrls() {
         return preferences.getStringSet(KEY_WS_URLS, null);
+    }
+    public void saveDeviceId(String deviceId) {
+        preferences.edit()
+                .putString(KEY_DEVICE_ID, deviceId)
+                .apply();
+    }
+    
+    public String getDeviceId(Context context) {
+        String savedDeviceId = preferences.getString(KEY_DEVICE_ID, null);
+        if (savedDeviceId == null) {
+            savedDeviceId = Settings.Secure.getString(
+                context.getContentResolver(), 
+                Settings.Secure.ANDROID_ID
+            );
+            saveDeviceId(savedDeviceId);
+        }
+        return savedDeviceId;
     }
 } 

@@ -4,7 +4,16 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp">
-
+	
+    <EditText
+        android:id="@+id/deviceIdInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:hint="设备ID"
+        android:inputType="text"
+        android:padding="12dp"
+        android:background="@drawable/bg_edit_text" />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
