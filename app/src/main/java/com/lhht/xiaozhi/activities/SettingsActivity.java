@@ -21,6 +21,7 @@ public class SettingsActivity extends AppCompatActivity {
     private RecyclerView wsUrlList;
     private Button addWsUrlButton;
     private WsUrlAdapter wsUrlAdapter;
+    private EditText deviceIdInput;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +39,9 @@ public class SettingsActivity extends AppCompatActivity {
         // 加载当前设置
         tokenInput.setText(settingsManager.getToken());
         enableTokenSwitch.setChecked(settingsManager.isTokenEnabled());
-
+		
+        deviceIdInput = findViewById(R.id.deviceIdInput);
+        deviceIdInput.setText(settingsManager.getDeviceId(this));
         // 加载WebSocket地址列表
         Set<String> wsUrls = settingsManager.getWsUrls();
         if (wsUrls == null) {
@@ -74,6 +77,7 @@ public class SettingsActivity extends AppCompatActivity {
                 settingsManager.saveSettings(selectedWsUrl, token, enableToken);
             }
             settingsManager.saveWsUrls(new HashSet<>(currentUrls));
+            settingsManager.saveDeviceId(deviceId);
             finish();
         });
     }
