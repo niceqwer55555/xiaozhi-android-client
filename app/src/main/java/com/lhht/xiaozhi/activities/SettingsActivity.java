@@ -1,12 +1,16 @@
 package com.lhht.xiaozhi.activities;
 
 import android.os.Bundle;
-import android.widget.Button;
+import android.view.MenuItem;
 import android.widget.EditText;
-import android.widget.Switch;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.switchmaterial.SwitchMaterial;
+import com.google.android.material.textfield.TextInputEditText;
 import com.lhht.xiaozhi.R;
 import com.lhht.xiaozhi.settings.SettingsManager;
 import com.lhht.xiaozhi.adapters.WsUrlAdapter;
@@ -16,39 +20,42 @@ import java.util.Set;
 
 public class SettingsActivity extends AppCompatActivity {
     private SettingsManager settingsManager;
-    private EditText tokenInput;
-    private Switch enableTokenSwitch;
+    private TextInputEditText tokenInput;
+    private SwitchMaterial enableTokenSwitch;
     private RecyclerView wsUrlList;
-    private Button addWsUrlButton;
+    private MaterialButton addWsUrlButton;
     private WsUrlAdapter wsUrlAdapter;
-    private EditText deviceIdInput;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
+        // 设置Toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         settingsManager = new SettingsManager(this);
         
         tokenInput = findViewById(R.id.tokenInput);
         enableTokenSwitch = findViewById(R.id.enableTokenSwitch);
-        Button saveButton = findViewById(R.id.saveButton);
+        ExtendedFloatingActionButton saveButton = findViewById(R.id.saveButton);
         wsUrlList = findViewById(R.id.wsUrlList);
         addWsUrlButton = findViewById(R.id.addWsUrlButton);
 
         // 加载当前设置
         tokenInput.setText(settingsManager.getToken());
         enableTokenSwitch.setChecked(settingsManager.isTokenEnabled());
-		
-        deviceIdInput = findViewById(R.id.deviceIdInput);
-        deviceIdInput.setText(settingsManager.getDeviceId(this));
+
         // 加载WebSocket地址列表
         Set<String> wsUrls = settingsManager.getWsUrls();
         if (wsUrls == null) {
             wsUrls = new HashSet<>();
             wsUrls.add(settingsManager.getWsUrl()); // 添加当前的URL
         }
-        setupWsUrlList(new ArrayList<>(wsUrls));
+        setupWsUrlList(new ArrayList<>(wsUrls), settingsManager.getWsUrl());
 
         // 根据Token开关状态更新Token输入框状态
         updateTokenInputState();
@@ -64,27 +71,29 @@ public class SettingsActivity extends AppCompatActivity {
 
             // 获取当前所有WebSocket地址
             ArrayList<String> currentUrls = wsUrlAdapter.getUrls();
+            String selectedWsUrl = wsUrlAdapter.getSelectedUrl();
 
-            // 获取第一个非空地址作为当前选中的地址
-            String selectedWsUrl = null;
-            for (String url : currentUrls) {
-                if (!url.isEmpty()) {
-                    selectedWsUrl = url;
-                    break;
-                }
-            }
-            if (selectedWsUrl != null) {
+            // 保存设置
+            if (!selectedWsUrl.isEmpty()) {
                 settingsManager.saveSettings(selectedWsUrl, token, enableToken);
             }
             settingsManager.saveWsUrls(new HashSet<>(currentUrls));
-            settingsManager.saveDeviceId(deviceId);
             finish();
         });
     }
 
-    private void setupWsUrlList(ArrayList<String> urls) {
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void setupWsUrlList(ArrayList<String> urls, String currentUrl) {
         wsUrlList.setLayoutManager(new LinearLayoutManager(this));
-        wsUrlAdapter = new WsUrlAdapter(urls, url -> wsUrlAdapter.removeUrl(url));
+        wsUrlAdapter = new WsUrlAdapter(urls, currentUrl, url -> wsUrlAdapter.removeUrl(url));
         wsUrlList.setAdapter(wsUrlAdapter);
     }
 
