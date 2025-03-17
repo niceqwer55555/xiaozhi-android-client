@@ -11,10 +11,12 @@
 ## 功能特点
 
 - 实时语音电话对话
+- 多服务地址添加
 - 文字消息交互
 - 波形动画显示
 - 支持Opus音频编解码
 - 支持Token认证
+- 支持自定义MAC
 - 自动重连机制
 - 深色/浅色主题适配
 - 随时打断，随时说话
@@ -52,6 +54,9 @@ git clone https://github.com/TOM88812/xiaozhi-android-client.git
    - 可选择是否启用Token认证
    - 在设置页面配置Token
 
+3. 自定义MAC
+   - Android ID生成的MAC，或者自定义MAC
+   - 在设置页面配置MAC
 ## 技术栈
 
 - WebSocket: Java-WebSocket 1.5.4
@@ -60,4 +65,12 @@ git clone https://github.com/TOM88812/xiaozhi-android-client.git
 ## 开发环境
 
 - Android Studio
-- JDK 11
+- JDK 17
+
+## 已知问题
+
+- 目前对话基于音频输出活动，有活动时则闭麦，没有活动等待1s开启麦克风。伪回音消除
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=TOM88812/xiaozhi-android-client&type=Date)](https://star-history.com/#TOM88812/xiaozhi-android-client&Date)
