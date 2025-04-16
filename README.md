@@ -1,6 +1,6 @@
 # 小智AI助手 Android IOS 客户端
 
-> 目前已经发布新版本，敬请体验！
+> 目前已经发布新版本，敬请体验！flutter IOS端回音消除未实现，欢迎大家PR。
 > 觉得项目对您有用的，可以赞赏一下，您的每一次赞赏都是我前进的动力。
 > Dify支持发送图片交互。可以添加多个小智到聊天列表，需要连接虾哥官方的需要先有注册过的设备MAC地址。
 
@@ -37,6 +37,8 @@
 - **多AI模型支持**：
   - 集成小智AI服务（WebSocket实时语音对话）
   - 支持Dify
+  - 支持OpenAI-图文消息-流式输出（已完成）
+  - 支持官方小智-一键添加设备注册（已完成）
 - **丰富的交互方式**：
   - 支持实时语音通话（持续对话）
   - 支持文字消息交互
@@ -52,6 +54,7 @@
   - 多种AI服务配置管理
   - 自动重连机制
   - 语音/文字会话混合历史
+  - 实现安卓 AEC+NS 回音消除
 
 ## 系统要求
 
@@ -60,7 +63,6 @@
 - **iOS**: 12.0+
 - **Android**: API 21+ (Android 5.0+)
 - **Web**: 现代浏览器支持
-- **桌面平台**: Windows 10+, macOS 10.15+, Linux (支持GTK)
 
 ## 安装与构建
 
@@ -89,15 +91,6 @@ flutter build ios --release
 
 # Web
 flutter build web --release
-
-# Windows
-flutter build windows --release
-
-# macOS
-flutter build macos --release
-
-# Linux
-flutter build linux --release
 ```
 
 5. 如果没有证书:
@@ -121,10 +114,15 @@ IOS编译完后，需要在设置-APP中打开网络权限
 
 ## 开发计划
 - [ ] 深色/浅色主题适配
-- [ ] 支持更多AI服务提供商
-- [ ] 增强语音识别准确性
-- [ ] 支持MQTT
+- [x] 支持更多AI服务提供商
+- [x] 增强语音识别准确性
+- [x] 支持OTA自动注册设备
 - [ ] 支持Iot映射手机操作
+- [ ] 支持本地asr语音识别
+- [ ] 支持本地唤醒词
+- [ ] 支持TTS
+- [ ] 支持MCP_Client
+- [ ] 支持OpenAI接口联网搜索🔍
 
 
 ## 🌟支持
